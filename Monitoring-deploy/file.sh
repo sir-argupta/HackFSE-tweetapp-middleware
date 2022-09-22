@@ -14,6 +14,6 @@ sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-c
 sudo chmod +x /usr/local/bin/docker-compose
 sudo systemctl enable docker
 
-sudo git clone 
+sudo git clone https://github.com/sir-argupta/HackFSE-tweetapp-middleware.git
 cd /tweetapp-middleware/Monitoring-deploy
 sudo docker compose up -d .

@@ -12,12 +12,12 @@ terraform {
 provider "aws" {
   profile = "default"
   region  = "us-east-1"
+  shared_credentials_file = "~/.aws/credentials"
 }
 
 resource "aws_instance" "app_server" {
   ami             = "ami-04ff9e9b51c1f62ca"
   instance_type   = "t2.micro"
-  key_name        = "JainwindowsServer"
   user_data	= file("file.sh")
   security_groups = [ "Docker" ]
 

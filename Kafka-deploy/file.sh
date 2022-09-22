@@ -1,19 +1,13 @@
-#!/bin/bash
-
-sudo yum install -y yum-utils
-sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-sudo yum -y install terraform
-sudo touch ~/.bashrc
-sudo terraform -install-autocomplete
-sudo amazon-linux-extras install docker
-sudo service docker start
-sudo usermod -a -G docker ec2-user
-sudo chkconfig docker on
-sudo yum install -y git
-sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-sudo systemctl enable docker
-
-sudo git clone 
-cd /tweetapp-middleware/Kafka-deploy
-sudo docker compose up -d .
+#! /bin/bash
+sudo su
+sudo apt update --yes
+sudo apt install openjdk-8-jdk --yes
+mkdir Downloads
+sudo curl "https://archive.apache.org/dist/kafka/2.8.1/kafka_2.12-2.8.1.tgz" -o /Downloads/kafka.tgz
+sudo mkdir /kafka && cd /kafka
+sudo tar -xvzf /Downloads/kafka.tgz --strip 1
+echo "listeners=PLAINTEXT://kafkaserver.hackfse.argupta.xyz:9092" >> config/server.properties
+echo "advertised.listeners=PLAINTEXT://kafkaserver.hackfse.argupta.xyz:9092" >> config/server.properties
+sudo bin/zookeeper-server-start.sh config/zookeeper.properties&
+sudo bin/kafka-server-start.sh config/server.properties&
+sudo bin/kafka-topics.sh -zookeeper localhost:2181 -topic TweetMessage --create --partitions 3 --replication-factor 1&
